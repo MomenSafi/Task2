@@ -36,7 +36,11 @@
                 @foreach (var obj in Model)
                 {
                     <tr>
-                        <td>@obj.CategoryName</td>
+                        <td>
+                            <a asp-controller="Category" asp-action="GetAllProduct" asp-route-id="@obj.CategoryId" style="color:black; text-decoration:none">
+                                @obj.CategoryName
+                            </a>
+                        </td>
                         <td>
                             @obj.CategoryImage
                         </td>

@@ -1,0 +1,83 @@
+﻿@using Newtonsoft.Json
+@model List<Product>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="searchInput" placeholder="Search categories">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" onclick="search()">Search</button>
+        </div>
+    </div>
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                @foreach(var obj in Model)
+                {
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="@obj.ProductImage" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">@obj.ProductName</h5>
+                                    <!-- Product price-->
+                                    @obj.Price
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function search() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var products = @Html.Raw(JsonConvert.SerializeObject(Model));
+
+            // Filter products based on the search term
+            var filteredProducts = products.filter(function (product) {
+                return product.ProductName.toLowerCase().includes(searchInput);
+            });
+
+            // Update the view with the filtered products
+            updateView(filteredProducts);
+        }
+
+        function updateView(filteredProducts) {
+            var productsContainer = document.querySelector('.row-cols-2');
+            productsContainer.innerHTML = '';
+
+            filteredProducts.forEach(function (obj) {
+                var productHtml = `
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <!-- Product image-->
+                                <img class="card-img-top" src="${obj.ProductImage}" alt="..." />
+                                <!-- Product details-->
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 class="fw-bolder">${obj.ProductName}</h5>
+                                        <!-- Product price-->
+                                        ${obj.Price}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                productsContainer.innerHTML += productHtml;
+            });
+        }
+    </script>
+
+
+</body>

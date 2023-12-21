@@ -5,7 +5,7 @@
 namespace MVC2.Migrations
 {
     /// <inheritdoc />
-    public partial class CreatedDb : Migration
+    public partial class restDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,11 +17,17 @@ namespace MVC2.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CategoryImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_CategoryId1",
+                        column: x => x.CategoryId1,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId");
                 });
 
             migrationBuilder.CreateTable(
@@ -45,6 +51,11 @@ namespace MVC2.Migrations
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_CategoryId1",
+                table: "Categories",
+                column: "CategoryId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_products_CategoryId",

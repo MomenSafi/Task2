@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231221070425_editRelation")]
-    partial class editRelation
+    [Migration("20231221200328_restDataBase")]
+    partial class restDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

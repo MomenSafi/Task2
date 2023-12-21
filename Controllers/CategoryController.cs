@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC2.Data;
 using MVC2.Models;
 
@@ -23,14 +24,13 @@ namespace MVC2.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            if (ModelState.IsValid)
-            {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Category created successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
+
+            _db.Categories.Add(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Category created successfully";
+            return RedirectToAction("Index");
+
+
         }
         public IActionResult Edit(int? id)
         {
@@ -44,14 +44,12 @@ namespace MVC2.Controllers
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
-            if (ModelState.IsValid)
-            {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Category updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
+
+            _db.Categories.Update(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Category updated successfully";
+            return RedirectToAction("Index");
+
 
         }
         public IActionResult Delete(int? id)
@@ -75,6 +73,21 @@ namespace MVC2.Controllers
             _db.SaveChanges();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
+        }
+        public IActionResult GetAllProduct(int id)
+        {
+            List<Product> categoryProducts = _db.products.Where(u => u.CategoryId == id).ToList();
+            return View(categoryProducts);
+        }
+        public ActionResult Search(string query)
+        {
+            List<Category> filteredCategories = _db.Categories.Where(c => c.CategoryName.Contains(query)).ToList();
+            List<Product> filteredProducts = _db.products.Where(p => p.ProductName.Contains(query)).ToList();
+
+            ViewBag.FilteredCategories = filteredCategories;
+            ViewBag.FilteredProducts = filteredProducts;
+
+            return View("GetAllProduct", filteredProducts);
         }
     }
 }
