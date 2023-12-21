@@ -11,5 +11,6 @@ namespace MVC2.Models
         public string CategoryName { get; set; }
         [Required]
         public string CategoryImage { get; set; }
+        public ICollection<Category> Categories { get; set;}
     }
 }
